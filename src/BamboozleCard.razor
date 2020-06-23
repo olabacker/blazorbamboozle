@@ -1,0 +1,68 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using BlazorBamboozle.Bootstrap
+
+<div class="card @CardShadowClasses mb-@MarginBottom mt-@MarginTop @_pointerHoverClass " @onclick="OnClickCallback">
+    @if (HeaderContent != null)
+    {
+        <div class="card-img-top">
+            @HeaderContent
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Header))
+    {
+        <h5 class="card-header">@Header</h5>
+    }
+
+    <div class="card-body p-@BodyPadding">
+        @ChildContent
+    </div>
+
+    @if(FooterContent != null)
+    {
+        <div class="card-footer">
+            @FooterContent
+        </div>
+    }
+</div>
+
+
+@code {
+
+    [Parameter]
+    public RenderFragment HeaderContent { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment FooterContent { get; set; }
+
+    [Parameter]
+    public ColorName HeaderColor { get; set; } = ColorName.Primary;
+
+    [Parameter]
+    public ColorName BorderColor { get; set; } = ColorName.None;
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClickCallback { get; set; }
+
+    [Parameter]
+    public int BodyPadding { get; set; } = 3;
+
+    [Parameter]
+    public string Header { get; set; } = string.Empty;
+
+    [Parameter]
+    public int MarginTop { get; set; } = 0;
+
+    [Parameter]
+    public int MarginBottom { get; set; } = 0;
+
+    [Parameter]
+    public bool ShowPointerOnHover { get; set; }
+    private string CardShadowClasses => BorderColor == ColorName.None ? "shadow border-0" : $"card-btm-border card-shadow-{BorderColor.ToClass()} border-{BorderColor.ToClass()}";
+
+    private string _pointerHoverClass => ShowPointerOnHover ? "cursor-pointer" : string.Empty;
+
+}
